@@ -119,11 +119,12 @@ jobs:
       run: |
         cd ${REDMINE_HOME}
 
+        mkdir -p coverage
+
         if [ "${{ matrix.version }}" = '4.0' ] ; then
             # "\xC5" from ASCII-8BIT to UTF-8 (Encoding::UndefinedConversionError)
             # https://www.redmine.org/issues/30963
             unset COVERAGE
-            mkdir coverage
         fi
 
         # skip db:test:prepare
