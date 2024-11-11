@@ -26,6 +26,19 @@
                 "-p", "3000"
             ],
             "useBundler": true
+        },
+        {
+            "name": "Redmine 6.0",
+            "type": "rdbg",
+            "request": "launch",
+            "cwd": "/usr/src/redmine/6.0",
+            "command": "rails",
+            "script": "server",
+            "args": [
+                "-e", "$RAILS_ENV",
+                "-p", "3000"
+            ],
+            "useBundler": true
         }
     ]
 }
