@@ -35,7 +35,7 @@ EOF
 
     echo "gem 'debug'" > Gemfile.local
 
-    bundle install
+    bundle install --with development test
     bundle exec rake generate_secret_token
     bundle exec rake db:migrate
     echo ja | bundle exec rake redmine:load_default_data
