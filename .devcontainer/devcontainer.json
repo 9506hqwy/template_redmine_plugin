@@ -27,5 +27,6 @@
     // because of avoid reject directory creating by container startup user.
     "containerUser": "vscode",
     // Expose redmine port.
+    "appPort": [3000],
     "forwardPorts": [3000]
 }
