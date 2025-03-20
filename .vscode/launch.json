@@ -6,7 +6,7 @@
             "type": "rdbg",
             "request": "launch",
             "cwd": "/usr/src/redmine/5.0",
-            "command": "rails",
+            "command": "bin/rails",
             "script": "server",
             "args": [
                 "-e", "$RAILS_ENV",
@@ -20,7 +20,7 @@
             "type": "rdbg",
             "request": "launch",
             "cwd": "/usr/src/redmine/5.1",
-            "command": "rails",
+            "command": "bin/rails",
             "script": "server",
             "args": [
                 "-e", "$RAILS_ENV",
@@ -34,7 +34,7 @@
             "type": "rdbg",
             "request": "launch",
             "cwd": "/usr/src/redmine/6.0",
-            "command": "rails",
+            "command": "bin/rails",
             "script": "server",
             "args": [
                 "-e", "$RAILS_ENV",
