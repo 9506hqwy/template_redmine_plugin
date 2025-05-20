@@ -202,11 +202,12 @@ jobs:
         eval $(fnm env --shell bash)
 
         cd ${REDMINE_HOME}
-        bundle exec rails server --daemon
-        sleep 3
+        bundle exec rails server --daemon --pid=./tmp/pids/server.pid
+        sleep 5
 
         cd plugins/${PLUGIN_NAME}
-        npx playwright test --reporter=list
+        # https://github.com/microsoft/playwright/issues/27620
+        HOME=/root npx playwright test --reporter=list
 
         cd ${REDMINE_HOME}
         kill $(cat ./tmp/pids/server.pid)
