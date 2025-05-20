@@ -82,7 +82,10 @@ jobs:
     - name: Install essential
       run: |
         apt-get update
-        apt-get install -y build-essential
+        apt-get install -y \
+            build-essential \
+            curl \
+            unzip
 
     - name: Create database.yml (MySQL 5.7)
       if: matrix.db == 'mysql57'
@@ -172,6 +175,36 @@ jobs:
 
         # skip db:test:prepare
         bundle exec rake test TEST=plugins/${PLUGIN_NAME}/test/**/*_test.rb
+
+    - name: Install fnm
+      if: matrix.version != '3.4' && matrix.db == 'sqlite3'
+      run: |
+        curl -o- https://fnm.vercel.app/install | bash
+        echo 'export FNM_PATH="$HOME/.local/share/fnm"' >> $GITHUB_ENV
+        echo 'export PATH="$FNM_PATH:$PATH"' >> $GITHUB_ENV
+        fnm env >> $GITHUB_ENV
+
+    - name: Install Node.js
+      if: matrix.version != '3.4' && matrix.db == 'sqlite3'
+      run: fnm install 22
+
+    - name: Install Playwright
+      if: matrix.version != '3.4' && matrix.db == 'sqlite3'
+      run: |
+        npm install
+        npx playwright install-deps
+        npx playwright install
+
+    - name: Run Playwright
+      if: matrix.version != '3.4' && matrix.db == 'sqlite3'
+      run: |
+        cd ${REDMINE_HOME}
+        bundle exec rails server > /dev/null &
+
+        cd plugins/${PLUGIN_NAME}
+        npx playwright test --reporter=list
+
+        kill %1
 
     - name: Generate coverage report
       if: matrix.db == 'sqlite3'
