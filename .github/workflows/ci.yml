@@ -185,13 +185,13 @@ jobs:
     - name: Install Node.js
       if: matrix.version != '3.4' && matrix.db == 'sqlite3'
       run: |
-        eval $(fnm env)
+        eval $(fnm env --shell bash)
         fnm install 22
 
     - name: Install Playwright
       if: matrix.version != '3.4' && matrix.db == 'sqlite3'
       run: |
-        eval $(fnm env)
+        eval $(fnm env --shell bash)
         npm install
         npx playwright install-deps
         npx playwright install
@@ -199,14 +199,17 @@ jobs:
     - name: Run Playwright
       if: matrix.version != '3.4' && matrix.db == 'sqlite3'
       run: |
-        eval $(fnm env)
+        eval $(fnm env --shell bash)
+
         cd ${REDMINE_HOME}
-        bundle exec rails server > /dev/null &
+        bundle exec rails server --daemon
+        sleep 3
 
         cd plugins/${PLUGIN_NAME}
         npx playwright test --reporter=list
 
-        kill %1
+        cd ${REDMINE_HOME}
+        kill $(cat ./tmp/pids/server.pid)
 
     - name: Generate coverage report
       if: matrix.db == 'sqlite3'
