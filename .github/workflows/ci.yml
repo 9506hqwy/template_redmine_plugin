@@ -182,7 +182,7 @@ jobs:
         curl -o- https://fnm.vercel.app/install | bash
         echo 'export FNM_PATH="$HOME/.local/share/fnm"' >> $GITHUB_ENV
         echo 'export PATH="$FNM_PATH:$PATH"' >> $GITHUB_ENV
-        fnm env >> $GITHUB_ENV
+        "$HOME/.local/share/fnm/fnm" env >> $GITHUB_ENV
 
     - name: Install Node.js
       if: matrix.version != '3.4' && matrix.db == 'sqlite3'
