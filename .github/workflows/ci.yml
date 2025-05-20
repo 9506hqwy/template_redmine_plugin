@@ -180,17 +180,18 @@ jobs:
       if: matrix.version != '3.4' && matrix.db == 'sqlite3'
       run: |
         curl -o- https://fnm.vercel.app/install | bash
-        echo 'export FNM_PATH="$HOME/.local/share/fnm"' >> $GITHUB_ENV
-        echo 'export PATH="$FNM_PATH:$PATH"' >> $GITHUB_ENV
-        "$HOME/.local/share/fnm/fnm" env >> $GITHUB_ENV
+        echo "$HOME/.local/share/fnm" >> $GITHUB_PATH
 
     - name: Install Node.js
       if: matrix.version != '3.4' && matrix.db == 'sqlite3'
-      run: fnm install 22
+      run: |
+        eval $(fnm env)
+        fnm install 22
 
     - name: Install Playwright
       if: matrix.version != '3.4' && matrix.db == 'sqlite3'
       run: |
+        eval $(fnm env)
         npm install
         npx playwright install-deps
         npx playwright install
@@ -198,6 +199,7 @@ jobs:
     - name: Run Playwright
       if: matrix.version != '3.4' && matrix.db == 'sqlite3'
       run: |
+        eval $(fnm env)
         cd ${REDMINE_HOME}
         bundle exec rails server > /dev/null &
 
