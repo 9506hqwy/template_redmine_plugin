@@ -151,7 +151,8 @@ jobs:
         ln -s ${PLUGIN_DIR} ${PLUGIN_NAME}
         cd ..
         bundle install --with test
-        bundle exec rake db:drop db:create db:migrate redmine:plugins:migrate
+        bundle exec rake db:drop
+        bundle exec rake db:create db:migrate redmine:plugins:migrate
         echo ja | bundle exec rake redmine:load_default_data
 
     - name: Check format
@@ -181,12 +182,17 @@ jobs:
       run: |
         curl -o- https://fnm.vercel.app/install | bash
         echo "$HOME/.local/share/fnm" >> $GITHUB_PATH
+      env:
+        # https://github.com/microsoft/playwright/issues/27620
+        HOME: /root
 
     - name: Install Node.js
       if: matrix.version != '3.4' && matrix.db == 'sqlite3'
       run: |
         eval $(fnm env --shell bash)
         fnm install 22
+      env:
+        HOME: /root
 
     - name: Install Playwright
       if: matrix.version != '3.4' && matrix.db == 'sqlite3'
@@ -195,6 +201,8 @@ jobs:
         npm install
         npx playwright install-deps
         npx playwright install
+      env:
+        HOME: /root
 
     - name: Run Playwright
       if: matrix.version != '3.4' && matrix.db == 'sqlite3'
@@ -206,11 +214,12 @@ jobs:
         sleep 5
 
         cd plugins/${PLUGIN_NAME}
-        # https://github.com/microsoft/playwright/issues/27620
-        HOME=/root npx playwright test --reporter=list
+        npx playwright test --reporter=list
 
         cd ${REDMINE_HOME}
         kill $(cat ./tmp/pids/server.pid)
+      env:
+        HOME: /root
 
     - name: Generate coverage report
       if: matrix.db == 'sqlite3'
