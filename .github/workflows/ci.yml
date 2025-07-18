@@ -15,14 +15,12 @@ jobs:
       fail-fast: false
       matrix:
         db: [mysql57, mysql80, postgres, sqlite3]
-        version: ['3.4', '4.0', '4.1', '4.2', '5.0', '5.1', '6.0']
+        version: ['4.0', '4.1', '4.2', '5.0', '5.1', '6.0']
         exclude:
           - db: mysql57
             version: "5.1"
           - db: mysql57
             version: "6.0"
-          - db: mysql80
-            version: "3.4"
           - db: mysql80
             version: "4.0"
           - db: mysql80
@@ -31,8 +29,6 @@ jobs:
             version: "4.2"
           - db: mysql80
             version: "5.0"
-          - db: postgres
-            version: "3.4"
 
     services:
       mysql57:
@@ -179,7 +175,7 @@ jobs:
         bundle exec rake test TEST=plugins/${PLUGIN_NAME}/test/**/*_test.rb
 
     - name: Install fnm
-      if: matrix.version != '3.4' && matrix.db == 'sqlite3'
+      if: matrix.db == 'sqlite3'
       run: |
         curl -o- https://fnm.vercel.app/install | bash
         echo "$HOME/.local/share/fnm" >> $GITHUB_PATH
@@ -188,7 +184,7 @@ jobs:
         HOME: /root
 
     - name: Install Node.js
-      if: matrix.version != '3.4' && matrix.db == 'sqlite3'
+      if: matrix.db == 'sqlite3'
       run: |
         eval $(fnm env --shell bash)
         fnm install 22
@@ -196,7 +192,7 @@ jobs:
         HOME: /root
 
     - name: Install Playwright
-      if: matrix.version != '3.4' && matrix.db == 'sqlite3'
+      if: matrix.db == 'sqlite3'
       run: |
         eval $(fnm env --shell bash)
         npm install
@@ -206,7 +202,7 @@ jobs:
         HOME: /root
 
     - name: Run Playwright
-      if: matrix.version != '3.4' && matrix.db == 'sqlite3'
+      if: matrix.db == 'sqlite3'
       run: |
         eval $(fnm env --shell bash)
 

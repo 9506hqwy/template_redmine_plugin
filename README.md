@@ -69,7 +69,6 @@ npx playwright test --reporter list --workers 1 --project "webkit test"
 ## Tested Environment
 
 * Redmine (Docker Image)
-  * 3.4
   * 4.0
   * 4.1
   * 4.2
