@@ -31,8 +31,8 @@ Lint source code.
 
 ```sh
 # ruby
-FILES=$(find -L "plugins/${PLUGIN_NAME}" -name '*.rb')
-bundle exec rubocop $FILES
+mapfile -t FILES < <(find -L "plugins/${PLUGIN_NAME}" -name '*.rb')
+bundle exec rubocop "${FILES[@]}"
 
 # javascript
 npm run lint
@@ -49,7 +49,7 @@ RAILS_ENV=test exec rake db:create db:migrate redmine:plugins:migrate
 echo ja | RAILS_ENV=test bundle exec rake redmine:load_default_data
 
 # Run Test
-RAILS_ENV=test bundle exec rake test TEST=plugins/${PLUGIN_NAME}/test/**/*_test.rb
+RAILS_ENV=test bundle exec rake test TEST="plugins/${PLUGIN_NAME}/test/**/*_test.rb"
 ```
 
 Execute E2E test code.
