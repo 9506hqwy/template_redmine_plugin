@@ -78,4 +78,4 @@ npx playwright test --reporter list --workers 1 --project "webkit test"
 * Database
   * SQLite
   * MySQL 5.7 or 8.0
-  * PostgreSQL 12
+  * PostgreSQL 14

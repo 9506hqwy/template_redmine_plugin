@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Install dependencies
-sudo apt-get update
+sudo apt-get update -y
 sudo apt-get install -y imagemagick zstd
 
 # Configuration PATH
