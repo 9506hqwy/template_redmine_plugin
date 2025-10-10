@@ -45,7 +45,7 @@ Execute test code.
 ```sh
 # Once
 RAILS_ENV=test bundle exec rake db:drop
-RAILS_ENV=test exec rake db:create db:migrate redmine:plugins:migrate
+RAILS_ENV=test bundle exec rake db:create db:migrate redmine:plugins:migrate
 echo ja | RAILS_ENV=test bundle exec rake redmine:load_default_data
 
 # Run Test
