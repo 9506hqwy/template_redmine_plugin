@@ -6,6 +6,6 @@ class ProjectTest < ActiveSupport::TestCase
   fixtures :projects
 
   def test_true
-      assert true
+    assert true
   end
 end
