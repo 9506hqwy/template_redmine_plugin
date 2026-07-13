@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Install dependencies
 sudo apt-get update -y
-sudo apt-get install -y imagemagick nodejs npm shellcheck zstd
+sudo apt-get install -y imagemagick nodejs npm pandoc shellcheck zstd
 
 # Configuration PATH
 mkdir -p ~/.local/bin
@@ -68,6 +68,7 @@ pushd "${REDMINE_HOME}"
 git clone --depth 1 -b 5.1-stable "${REDMINE_URL}" 5.1
 git clone --depth 1 -b 6.0-stable "${REDMINE_URL}" 6.0
 git clone --depth 1 -b 6.1-stable "${REDMINE_URL}" 6.1
+git clone --depth 1 -b 7.0-stable "${REDMINE_URL}" 7.0
 
 for BASE in ./*
 do
