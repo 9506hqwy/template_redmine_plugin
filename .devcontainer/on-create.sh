@@ -70,6 +70,11 @@ git clone --depth 1 -b 6.0-stable "${REDMINE_URL}" 6.0
 git clone --depth 1 -b 6.1-stable "${REDMINE_URL}" 6.1
 git clone --depth 1 -b 7.0-stable "${REDMINE_URL}" 7.0
 
+bundle config unset without
+bundle config unset --local without
+bundle config set --local with "development test"
+bundle config set --local path "vendor/bundle"
+
 for BASE in ./*
 do
     pushd "${BASE}"
@@ -90,7 +95,7 @@ EOF
 
     echo "gem 'debug'" > Gemfile.local
 
-    bundle install --with development test
+    bundle install
     bundle exec rake generate_secret_token
     bundle exec rake db:migrate
     echo ja | bundle exec rake redmine:load_default_data
