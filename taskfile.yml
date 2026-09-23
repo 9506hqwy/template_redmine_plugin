@@ -27,6 +27,7 @@ tasks:
           enum: [5.1, 6.0, 6.1, 7.0]
     cmds:
       - bundle exec rails about
+      - rm -f ./db/schema.rb
       - RAILS_ENV=test bundle exec rake db:drop
       - RAILS_ENV=test bundle exec rake db:create db:migrate redmine:plugins:migrate
       - echo ja | RAILS_ENV=test bundle exec rake redmine:load_default_data
@@ -51,3 +52,36 @@ tasks:
       - npx playwright test --reporter list --workers 1 --project "chromium test"
       - npx playwright test --reporter list --workers 1 --project "firefox test"
       - npx playwright test --reporter list --workers 1 --project "webkit test"
+
+  plugin-model:
+    cmds:
+      - bundle exec rails generate redmine_plugin_model "${PLUGIN_NAME}" {{.CLI_ARGS}}
+    dir: /usr/src/redmine/5.1
+
+  plugin-controller:
+    cmds:
+      - bundle exec rails generate redmine_plugin_controller "${PLUGIN_NAME}" {{.CLI_ARGS}}
+    dir: /usr/src/redmine/5.1
+
+  plugin-migration:
+    cmds:
+      - bundle exec rails generate redmine_plugin_migration "${PLUGIN_NAME}" {{.CLI_ARGS}}
+    dir: /usr/src/redmine/5.1
+
+  plugin-db-migrate:
+    requires:
+      vars:
+        - name: VERSION
+          enum: [5.1, 6.0, 6.1, 7.0]
+    cmds:
+      - bundle exec rails redmine:plugins:migrate {{.CLI_ARGS}} NAME="${PLUGIN_NAME}"
+    dir: /usr/src/redmine/{{.VERSION}}
+
+  plugin-db-revert:
+    requires:
+      vars:
+        - name: VERSION
+          enum: [5.1, 6.0, 6.1, 7.0]
+    cmds:
+      - bundle exec rails redmine:plugins:migrate {{.CLI_ARGS}} NAME="${PLUGIN_NAME}" VERSION=0
+    dir: /usr/src/redmine/{{.VERSION}}
